@@ -36,11 +36,14 @@ class Bd {
             localStorage.setItem('id', 0)
         }
     }
+
+    //Gera proximo id com base no número do anterior
     getProximoId () {
         let proximoId = localStorage.getItem('id')
         return parseInt(proximoId) + 1
     }
 
+    //Grava o Id gerado
     gravar (d) {
         
         let id = this.getProximoId()
@@ -50,7 +53,7 @@ class Bd {
         localStorage.setItem('id', id)
     }
 
-
+    //Recupera todos os registros cadastrados e armazenados no localStorage
     recuperarTodosRegistros () {
 
         //array despesas
@@ -60,7 +63,7 @@ class Bd {
 
         let id = localStorage.getItem('id')
 
-        //recuperar todas as despesas do localStorage
+        //lógica para recuperar todas as despesas do localStorage e id
         for (let i = 1; i <= id; i++) {
             //recuperar a despesa
             let despesa = JSON.parse(localStorage.getItem(i))
@@ -79,26 +82,27 @@ class Bd {
         return despesas
     }
 
+    //Método para filtro das despesas
     pesquisar(despesa) {
 
         let despesasFiltradas = Array()
         despesasFiltradas =  this.recuperarTodosRegistros()
 
-        console.log(despesasFiltradas)
-        console.log(despesa)
+        //console.log(despesasFiltradas)
+        //console.log(despesa)
         
 
         // Aplicar filtros / ano,mes,dia etc
 
         // ANO
         if(despesa.ano != '') {
-            console.log('Filtro Ano')
+            //console.log('Filtro Ano')
             despesasFiltradas = despesasFiltradas.filter(d => d.ano == despesa.ano)
         }
         
         // MES
         if(despesa.mes != '') {
-            console.log('Filtro Mes')
+            //console.log('Filtro Mes')
             despesasFiltradas = despesasFiltradas.filter(d => d.mes == despesa.mes)
         }
 
@@ -106,7 +110,7 @@ class Bd {
 
         // DIA
         if(despesa.dia != '') {
-            console.log('Filtro Dia')
+            //console.log('Filtro Dia')
             despesasFiltradas = despesasFiltradas.filter(d => d.dia == despesa.dia)
         }
 
@@ -114,7 +118,7 @@ class Bd {
 
         // TIPO
         if(despesa.tipo != '') {
-            console.log('Filtro Tipo')
+            //console.log('Filtro Tipo')
             despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo)
         }
 
@@ -122,7 +126,7 @@ class Bd {
 
         // DESCRICAO
         if(despesa.descricao != '') {
-            console.log('Filtro Descrição')
+            //console.log('Filtro Descrição')
             despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
         }
 
@@ -130,18 +134,20 @@ class Bd {
 
         // VALOR
         if(despesa.valor != '') {
-            console.log('Filtro Valor')
+            //console.log('Filtro Valor')
             despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
         }
 
         return despesasFiltradas
     }
 
+    // Método que remove a despesa com base no id  
     remover(id) {
         localStorage.removeItem(id)  
     }
 }
 
+//Criando Banco de Dados com base na classe
 let bd = new Bd()
 
 
@@ -189,7 +195,7 @@ function modalExcluirDespesa() {
 /**------------------------------ */
 
 
-//! Função Limpar os inputs Após validação positiva da despesa
+
 
 
 //! Função Cadastar despesa
@@ -211,6 +217,7 @@ function cadastrarDespesa () {
         //dialog de sucesso
         modalPositivo()
         $('#modalRegistraDespesa').modal('show')
+        //! Limpar os inputs Após validação positiva da despesa
         ano.value = ''
         mes.value = ''
         dia.value = ''
@@ -226,6 +233,8 @@ function cadastrarDespesa () {
     }
     
 }
+
+//Capta evento de click para cadastrar a despesa
 botaoCadastro.addEventListener('click', cadastrarDespesa);
 
 
@@ -247,13 +256,13 @@ function carregarListaDespesas (despesas = Array(), filtro = false) {
     
 
 
-    // selecionado o elenmento tbody da tabela
+    // selecionado o elemento tbody da tabela
     let listaDepesas = document.getElementById('listaDespesas')
     listaDepesas.innerHTML = ''
 
 
 
-    /**
+    /**  EXEMPLO DO HTML QUE SERA CRIADO SISTEMATICAMENTE COM JS
             <tr>
                 <td>15/03/2018</td>
                 <td>Alimentação</td>
@@ -265,7 +274,7 @@ function carregarListaDespesas (despesas = Array(), filtro = false) {
 
 
 
-    //percorrer despesas listando DESPESA dinamicamente
+    //percorrer array despesas listando casa DESPESA dinamicamente
     despesas.forEach(function(d) {
         // console.log(d)
 
@@ -277,7 +286,7 @@ function carregarListaDespesas (despesas = Array(), filtro = false) {
         linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`
         
 
-        //ajusta o tipo
+        //ajusta o tipo (de id para decrição do tipo)
 
         switch(parseInt(d.tipo)) {
             case 1 : d.tipo = 'Alimentação'
@@ -302,28 +311,31 @@ function carregarListaDespesas (despesas = Array(), filtro = false) {
         btn.className = 'btn btn-danger'
         btn.innerHTML = '<i class="fas fa-times"></i>'
         btn.id = `id_despesa_${d.id}`
+
         //Função para remover a despesa
-        
         btn.onclick = function () {
-            //remove a despesa
+
             //remover string e deixar apenas o ID
             let id = this.id.replace('id_despesa_', '')
         
-            //Remove a despesa da consulta
+            //Remove a despesa da página de consulta
             bd.remover(id)
 
-        
+            //Recarrega a página automáticamente para atualizar os dados no localStorage 
+            //E atualizar a lista de despesas que serão mostradas na tabela
             window.location.reload()
         }
+
+        //inserindo o botão na tabela
         linha.insertCell(4).append(btn)
 
         
 
-        console.log(d)
+        //console.log(d)
     })
 }
 
-
+/**------------------------------ */
 
 //! Função pesquisar as despeas (filtro)
 // const botaoPesquisa = document.getElementById('btnPesquisa')

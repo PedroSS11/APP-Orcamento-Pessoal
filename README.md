@@ -5,7 +5,7 @@ App - Orçamento Pessoal
 
 /*  ----------------------   */
 
-Este projeto é um app que faz o uso do local Storage (WebStorage) para armazenar despesas cadastradas pelo usuário, com as opções de adicionar despesa, consultar todas as despesas cadastradas (podendo também fazer o uso de filtros para facilitar a busca), e exclui alguma despesa caso necessário.
+Este projeto é um app que faz o uso do local Storage (WebStorage) para armazenar despesas cadastradas pelo usuário, com as opções de adicionar despesa, consultar todas as despesas cadastradas (podendo também fazer o uso de filtros para facilitar a busca), e excluir alguma despesa caso necessário.
 
 
 Desenvolvido com:

@@ -1,4 +1,4 @@
-# financas-pessoais
+# Orçamento Pessoal Javascript
 App - Orçamento Pessoal
 
 // Continuará Recebendo atualização, para implementação de um registro de usuário, e tela inicial com algumas informações como : total de despesas, valor total etc.
